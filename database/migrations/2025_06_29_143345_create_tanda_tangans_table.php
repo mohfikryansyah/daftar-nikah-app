@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('tanda_tangans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('permohonan_nikah_id')->constrained('permohonan_nikahs')->onDelete('cascade');
-            $table->string('ttd_mempelai_pria');
-            $table->string('ttd_mempelai_wanita');
-            $table->string('ttd_ortu_l_mempelai_pria');
-            $table->string('ttd_ortu_p_mempelai_pria');
-            $table->string('ttd_ortu_l_mempelai_wanita');
-            $table->string('ttd_ortu_p_mempelai_wanita');
-            $table->string('ttd_wali_nikah')->nullable();
+            $table->text('ttd_mempelai_pria');
+            $table->text('ttd_mempelai_wanita');
+            $table->text('ttd_ortu_l_mempelai_pria');
+            $table->text('ttd_ortu_p_mempelai_pria');
+            $table->text('ttd_ortu_l_mempelai_wanita');
+            $table->text('ttd_ortu_p_mempelai_wanita');
+            $table->text('ttd_wali_nikah')->nullable();
             $table->timestamps();
         });
     }
