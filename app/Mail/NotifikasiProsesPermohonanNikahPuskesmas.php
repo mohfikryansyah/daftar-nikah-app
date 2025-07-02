@@ -13,12 +13,14 @@ class NotifikasiProsesPermohonanNikahPuskesmas extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $permohonanNikah;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($permohonanNikah)
     {
-        //
+        $this->permohonanNikah = $permohonanNikah;
     }
 
     /**
