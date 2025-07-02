@@ -220,6 +220,7 @@ export default function FormPermohonanNikah() {
 
         e.preventDefault();
         post(route('catin.permohonan-nikah.store'), {
+            forceFormData: true,
             onSuccess: () => {
                 toast.success('Berhasil melengkapi data');
                 reset();
