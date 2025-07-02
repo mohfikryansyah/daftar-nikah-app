@@ -46,11 +46,11 @@ export default function Navbar() {
                 <div className="flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
                     <div className="hidden items-center gap-2 md:flex">
                         <div className="hidden w-full items-center justify-between gap-2 md:order-1 md:flex md:w-auto" id="navbar-sticky">
-                            <ul className="mt-4 mr-5 flex flex-col rounded-lg bg-transparent p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0 rtl:space-x-reverse">
+                            {/* <ul className="mt-4 mr-5 flex flex-col rounded-lg bg-transparent p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0 rtl:space-x-reverse">
                                 {NAV_ITEMS.map((item) => (
                                     <NavLink key={item.label} {...item} />
                                 ))}
-                            </ul>
+                            </ul> */}
                             {auth.user ? (
                                 hasRole(auth.user, ['catin']) ? (
                                     <Link

@@ -29,7 +29,7 @@ export default function DashboardKUA({ permohonanNikahChart, permohonanNikah }: 
             <Head title="Dashboard Puskesmas" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <h2 className="text-xl font-semibold tracking-tight">{`Selamat datang, ${auth.user.name}`}</h2>
-                <div className="grid md:grid-cols-2 gap-2">
+                <div className="md:grid md:grid-cols-2 gap-2 not-md:space-y-4">
                     <Card>
                         <CardContent>
                             <Chart data={permohonanNikahChart}></Chart>
