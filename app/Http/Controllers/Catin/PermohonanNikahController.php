@@ -26,6 +26,7 @@ class PermohonanNikahController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('role:catin')->except('show');
         $this->middleware('role:catin|kelurahan|puskesmas|kua|kecamatan')->only('show');
     }
 
@@ -53,9 +54,9 @@ class PermohonanNikahController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePermohonanNikahRequest $request)
     {
-        dd($request->all());
+
         DB::transaction(function () use ($request) {
             $userId = Auth::user()->id;
             // 1. Simpan pria
@@ -124,16 +125,18 @@ class PermohonanNikahController extends Controller
 
             TandaTangan::create([
                 'permohonan_nikah_id' => $permohonanNikah->id,
-                'ttd_mempelai_pria' => $this->simpanTtd($request->input('pria.ttd'), 'ttd-mempelai-pria-' . now()->timestamp),
-                'ttd_mempelai_wanita' => $this->simpanTtd($request->input('wanita.ttd'), 'ttd-mempelai-wanita-' . now()->timestamp),
-                'ttd_ortu_l_mempelai_pria' => $this->simpanTtd($request->input('pria.ayah.ttd'), 'ttd-ortu-l-pria-' . now()->timestamp),
-                'ttd_ortu_p_mempelai_pria' => $this->simpanTtd($request->input('pria.ibu.ttd'), 'ttd-ortu-p-pria-' . now()->timestamp),
-                'ttd_ortu_l_mempelai_wanita' => $this->simpanTtd($request->input('wanita.ayah.ttd'), 'ttd-ortu-l-wanita-' . now()->timestamp),
-                'ttd_ortu_p_mempelai_wanita' => $this->simpanTtd($request->input('wanita.ibu.ttd'), 'ttd-ortu-p-wanita-' . now()->timestamp),
+                'ttd_mempelai_pria' => $request->file('pria.ttd')->store('tanda-tangan', 'public'),
+                'ttd_mempelai_wanita' => $request->file('wanita.ttd')->store('tanda-tangan', 'public'),
+                'ttd_ortu_l_mempelai_pria' => $request->file('pria.ayah.ttd')->store('tanda-tangan', 'public'),
+                'ttd_ortu_p_mempelai_pria' => $request->file('pria.ibu.ttd')->store('tanda-tangan', 'public'),
+                'ttd_ortu_l_mempelai_wanita' => $request->file('wanita.ayah.ttd')->store('tanda-tangan', 'public'),
+                'ttd_ortu_p_mempelai_wanita' => $request->file('wanita.ibu.ttd')->store('tanda-tangan', 'public'),
 
-                'ttd_wali_nikah' => $request->filled('wali_nikah.ttd')
-                    ? $this->simpanTtd($request->input('wali_nikah.ttd'), 'ttd-wali-nikah-' . now()->timestamp)
+
+                'ttd_wali_nikah' => $request->hasFile('wali_nikah.ttd')
+                    ? $request->file('wali_nikah.ttd')->store('tanda-tangan', 'public')
                     : null,
+
             ]);
 
 

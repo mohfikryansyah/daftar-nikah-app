@@ -33,7 +33,7 @@ class StorePermohonanNikahRequest extends FormRequest
             'pria.pekerjaan' => 'required|string',
             'pria.status_perkawinan' => 'required|in:Belum Kawin,Kawin,Cerai Hidup,Cerai Mati,Janda,Duda,Perawan,Jejaka',
             'pria.alamat' => 'required|string',
-            'pria.ttd' => 'required|string',
+            'pria.ttd' => 'required|file|image|mimes:png|max:1024',
 
             'pria.ayah.nama_lengkap' => 'required|string',
             // 'pria.ayah.nik' => 'required|numeric|digits:16|unique:orang_tuas,nik',
@@ -46,7 +46,7 @@ class StorePermohonanNikahRequest extends FormRequest
             'pria.ayah.pekerjaan' => 'required|string',
             'pria.ayah.status_hubungan' => 'required|in:Ayah,Wali,Lainnya',
             'pria.ayah.alamat' => 'required|string',
-            'pria.ayah.ttd' => 'required|string',
+            'pria.ayah.ttd' => 'required|file|image|mimes:png|max:1024',
 
             'pria.ibu.nama_lengkap' => 'required|string',
             // 'pria.ibu.nik' => 'required|numeric|digits:16|unique:orang_tuas,nik',
@@ -59,7 +59,7 @@ class StorePermohonanNikahRequest extends FormRequest
             'pria.ibu.pekerjaan' => 'required|string',
             'pria.ibu.status_hubungan' => 'required|in:Ibu,Wali,Lainnya',
             'pria.ibu.alamat' => 'required|string',
-            'pria.ibu.ttd' => 'required|string',
+            'pria.ibu.ttd' => 'required|file|image|mimes:png|max:1024',
 
             'wanita.nama_lengkap' => 'required|string|max:255',
             // 'wanita.nik' => 'required|numeric|digits:16|unique:mempelais,nik',
@@ -72,7 +72,7 @@ class StorePermohonanNikahRequest extends FormRequest
             'wanita.pekerjaan' => 'required|string',
             'wanita.status_perkawinan' => 'required|in:Belum Kawin,Kawin,Cerai Hidup,Cerai Mati,Janda,Duda,Perawan,Jejaka',
             'wanita.alamat' => 'required|string',
-            'wanita.ttd' => 'required|string',
+            'wanita.ttd' => 'required|file|image|mimes:png|max:1024',
 
             'wanita.ayah.nama_lengkap' => 'required|string',
             // 'wanita.ayah.nik' => 'required|numeric|digits:16|unique:orang_tuas,nik',
@@ -85,7 +85,7 @@ class StorePermohonanNikahRequest extends FormRequest
             'wanita.ayah.pekerjaan' => 'required|string',
             'wanita.ayah.status_hubungan' => 'required|in:Ayah,Wali,Lainnya',
             'wanita.ayah.alamat' => 'required|string',
-            'wanita.ayah.ttd' => 'required|string',
+            'wanita.ayah.ttd' => 'required|file|image|mimes:png|max:1024',
 
             'wanita.ibu.nama_lengkap' => 'required|string',
             // 'wanita.ibu.nik' => 'required|numeric|digits:16|unique:orang_tuas,nik',
@@ -98,7 +98,7 @@ class StorePermohonanNikahRequest extends FormRequest
             'wanita.ibu.pekerjaan' => 'required|string',
             'wanita.ibu.status_hubungan' => 'required|in:Ibu,Wali,Lainnya',
             'wanita.ibu.alamat' => 'required|string',
-            'wanita.ibu.ttd' => 'required|string',
+            'wanita.ibu.ttd' => 'required|file|image|mimes:png|max:1024',
 
             'file_path' => 'required|file|mimes:pdf|max:2048',
             
