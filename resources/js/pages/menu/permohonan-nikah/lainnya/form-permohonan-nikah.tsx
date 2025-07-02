@@ -449,6 +449,7 @@ export default function FormPermohonanNikah() {
                         <Required />
                     </Label>
                     <SignaturePad
+                        defaultValue={data[key]?.ttd ?? undefined}
                         onChange={(base64) =>
                             setData(key, {
                                 ...data[key]!,
@@ -740,6 +741,7 @@ export default function FormPermohonanNikah() {
                         <Required />
                     </Label>
                     <SignaturePad
+                    defaultValue={data[orangTuaDari][ayahAtauIbu].ttd ?? undefined}
                         onChange={(base64) =>
                             setData(orangTuaDari, {
                                 ...data[orangTuaDari],
@@ -984,6 +986,7 @@ export default function FormPermohonanNikah() {
                                 <Required />
                             </Label>
                             <SignaturePad
+                                defaultValue={data[key].ttd ?? undefined}
                                 onChange={(base64) =>
                                     setData(key, {
                                         ...data[key],
@@ -991,6 +994,7 @@ export default function FormPermohonanNikah() {
                                     })
                                 }
                             />
+
                             <InputError message={getNestedError(`${key}`, 'ttd')}></InputError>
                         </div>
                     </div>
