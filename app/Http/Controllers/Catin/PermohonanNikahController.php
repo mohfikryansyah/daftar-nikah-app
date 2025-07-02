@@ -26,7 +26,6 @@ class PermohonanNikahController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:catin')->except('show');
         $this->middleware('role:catin|kelurahan|puskesmas|kua|kecamatan')->only('show');
     }
 

@@ -232,6 +232,8 @@ export default function FormPermohonanNikah() {
         });
     };
 
+    console.log('Data Formulir Permohonan Nikah:', data);
+
     const { capitalize } = useCapitalizeEachWord();
 
     const [informasiYangDiberikan, setInformasiYangDiberikan] = useState(false);
