@@ -24,11 +24,11 @@ use App\Http\Requests\StorePermohonanNikahRequest;
 
 class PermohonanNikahController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('role:catin')->except('show');
-    //     $this->middleware('role:catin|kelurahan|puskesmas|kua|kecamatan')->only('show');
-    // }
+    public function __construct()
+    {
+        $this->middleware('role:catin')->except('show');
+        $this->middleware('role:catin|kelurahan|puskesmas|kua|kecamatan')->only('show');
+    }
 
 
     /**
@@ -54,9 +54,9 @@ class PermohonanNikahController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePermohonanNikahRequest $request)
+    public function store(Request $request)
     {
-
+        dd($request->all());
         DB::transaction(function () use ($request) {
             $userId = Auth::user()->id;
             // 1. Simpan pria

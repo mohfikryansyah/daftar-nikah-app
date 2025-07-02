@@ -54,7 +54,7 @@ export default function CreateTemplateBerkas() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form onSubmit={submit} className="space-y-4">
+                        <form onSubmit={submit} className="space-y-4" encType='multipart/form-data'>
                             <div className="grid gap-2">
                                 <Label>Nama Berkas</Label>
                                 <Input

@@ -1009,7 +1009,7 @@ export default function FormPermohonanNikah() {
     );
 
     return (
-        <form onSubmit={submit} className="">
+        <form onSubmit={submit} encType='multipart/form-data'>
             <div className="grid gap-4">
                 <div className="space-y-4">
                     <Card>
