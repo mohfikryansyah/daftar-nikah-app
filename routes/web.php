@@ -13,7 +13,7 @@ Route::get('/', function () {
     return Inertia::render('landing-page/landing-page');
 })->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
         return redirect()->route('dashboard.kua');
     })->name('dashboard');
