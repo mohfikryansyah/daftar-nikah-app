@@ -41,7 +41,7 @@ export type FormOrangTua = {
     pekerjaan: string;
     alamat: string;
     status_hubungan: StatusHubungan;
-    ttd: string | null;
+    // ttd: string | null;
 };
 
 export type FormWaliNikah = {
@@ -54,7 +54,7 @@ export type FormWaliNikah = {
     pekerjaan: string;
     alamat: string;
     status_hubungan: 'Ayah Kandung' | 'Wali';
-    ttd: string | null;
+    // ttd: string | null;
 };
 
 export type FormMempelai = {
@@ -70,7 +70,7 @@ export type FormMempelai = {
     alamat: string;
     ayah: FormOrangTua;
     ibu: FormOrangTua;
-    ttd: string | null;
+    // ttd: string | null;
 };
 
 export type FormPermohonanNikah = {
@@ -105,7 +105,7 @@ export default function FormPermohonanNikah() {
                 pekerjaan: '',
                 alamat: '',
                 status_hubungan: 'Ayah' as StatusHubungan,
-                ttd: null,
+                // ttd: null,
             },
             ibu: {
                 nama_lengkap: '',
@@ -118,9 +118,9 @@ export default function FormPermohonanNikah() {
                 pekerjaan: '',
                 alamat: '',
                 status_hubungan: 'Ibu' as StatusHubungan,
-                ttd: null,
+                // ttd: null,
             },
-            ttd: null,
+            // ttd: null,
         },
         wanita: {
             nama_lengkap: '',
@@ -144,7 +144,7 @@ export default function FormPermohonanNikah() {
                 pekerjaan: '',
                 alamat: '',
                 status_hubungan: 'Ayah' as StatusHubungan,
-                ttd: null,
+                // ttd: null,
             },
             ibu: {
                 nama_lengkap: '',
@@ -157,9 +157,9 @@ export default function FormPermohonanNikah() {
                 pekerjaan: '',
                 alamat: '',
                 status_hubungan: 'Ibu' as StatusHubungan,
-                ttd: null,
+                // ttd: null,
             },
-            ttd: null,
+            // ttd: null,
         },
         file_path: null,
         ayah_adalah_wali: true,
@@ -173,7 +173,7 @@ export default function FormPermohonanNikah() {
             pekerjaan: '',
             alamat: '',
             status_hubungan: 'Wali',
-            ttd: null,
+            // ttd: null,
         },
     });
 
@@ -446,7 +446,7 @@ export default function FormPermohonanNikah() {
                     </Select>
                     <InputError message={getNestedError(`${key}`, 'status_hubungan')}></InputError>
                 </div>
-                <div className="flex flex-col space-y-2">
+                {/* <div className="flex flex-col space-y-2">
                     <Label>
                         Tanda Tangan
                         <Required />
@@ -461,7 +461,7 @@ export default function FormPermohonanNikah() {
                         }
                     />
                     <InputError message={getNestedError(`${key}`, 'nama_lengkap')}></InputError>
-                </div>
+                </div> */}
             </div>
         </div>
     );
@@ -738,7 +738,7 @@ export default function FormPermohonanNikah() {
                     />
                     <InputError message={getNestedError(`${orangTuaDari}`, `${ayahAtauIbu}`, 'alamat')}></InputError>
                 </div>
-                <div className="flex flex-col space-y-2">
+                {/* <div className="flex flex-col space-y-2">
                     <Label>
                         Tanda Tangan
                         <Required />
@@ -756,7 +756,7 @@ export default function FormPermohonanNikah() {
                         }
                     />
                     <InputError message={getNestedError(`${orangTuaDari}`, `${ayahAtauIbu}`, 'ttd')}></InputError>
-                </div>
+                </div> */}
             </div>
         </div>
     );
@@ -983,7 +983,7 @@ export default function FormPermohonanNikah() {
                             />
                             <InputError message={getNestedError(`${key}`, 'alamat')}></InputError>
                         </div>
-                        <div className="flex flex-col space-y-2">
+                        {/* <div className="flex flex-col space-y-2">
                             <Label>
                                 Tanda Tangan
                                 <Required />
@@ -999,7 +999,7 @@ export default function FormPermohonanNikah() {
                             />
 
                             <InputError message={getNestedError(`${key}`, 'ttd')}></InputError>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="space-y-12">
