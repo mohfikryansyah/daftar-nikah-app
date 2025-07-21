@@ -27,10 +27,22 @@ const mainNavItems: NavItem[] = [
         roles: ['kelurahan',]
     },
     {
+        title: 'Dashboard',
+        href: route('dashboard.kecamatan'),
+        icon: LayoutGrid,
+        roles: ['kecamatan',]
+    },
+    {
         title: 'Permohonan Nikah',
         href: route('catin.permohonan-nikah.index'),
         icon: HeartHandshake,
         roles: ['catin']
+    },
+    {
+        title: 'Permohonan Suket Kematian',
+        href: route('catin.permohonan-surat-keterangan-kematian.index'),
+        icon: HeartHandshake,
+        roles: ['catin', 'kecamatan', 'kelurahan']
     },
     {
         title: 'Permohonan Nikah',
@@ -42,7 +54,7 @@ const mainNavItems: NavItem[] = [
         title: 'Template Berkas',
         href: route('kelurahan.template-berkas.index'),
         icon: FileText,
-        roles: ['kelurahan', 'puskesmas']
+        roles: ['kelurahan', 'puskesmas', 'kecamatan']
     },
 ];
 

@@ -41,6 +41,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('dashboard.kelurahan', absolute: false));
         } elseif ($role === 'puskesmas') {
             return redirect()->intended(route('dashboard.puskesmas', absolute: false));
+        } elseif ($role === 'kecamatan') {
+            return redirect()->intended(route('dashboard.kecamatan', absolute: false));
         } elseif ($role === 'kua') {
             return redirect()->intended(route('dashboard.kua', absolute: false));
         } elseif ($role === 'catin') {

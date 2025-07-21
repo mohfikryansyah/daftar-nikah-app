@@ -44,13 +44,32 @@ export function hasRole(user: User, roles: string[]) {
     return user.roles.some(r => roles.includes(r));
 }
 
-export const getStatusBadgeClass = (status: StatusPermohonanNikah): string => {
+export const getStatusBadgeClass = (status: string): string => {
   if (status.startsWith('Menunggu')) {
     return 'bg-yellow-100 text-yellow-800 border border-yellow-300';
   }
 
   if (status.startsWith('Diverifikasi')) {
     return 'bg-blue-100 text-blue-800 border border-blue-300';
+  }
+
+  if (status.startsWith('Ditolak')) {
+    return 'bg-red-100 text-red-800 border border-red-300';
+  }
+
+  if (status === 'Selesai') {
+    return 'bg-green-100 text-green-800 border border-green-300';
+  }
+
+  return '';
+};
+export const getStatusBadgeClassKecamatan = (status: string): string => {
+  if (status.startsWith('Menunggu')) {
+    return 'bg-yellow-100 text-yellow-800 border border-yellow-300';
+  }
+
+  if (status.startsWith('Diverifikasi')) {
+    return 'bg-green-100 text-green-800 border border-green-300';
   }
 
   if (status.startsWith('Ditolak')) {

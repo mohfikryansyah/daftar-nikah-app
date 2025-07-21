@@ -146,3 +146,42 @@ export interface JadwalBimbinganNikah {
     updated_at: string;
 }
 
+export interface PemohonSuketKematian {
+  id: string;
+  user_id: number;
+  nama_lengkap: string;
+  bin_binti: string;
+  nik: string;
+  tempat_lahir: string;
+  tanggal_lahir: string;
+  kewarganegaraan: string;
+  agama: string;
+  pekerjaan: string;
+  alamat: string;
+  tanggal_meninggal?: string | null;
+  tempat_meninggal?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface BerkasPermohonanSuketKematian {
+  id: number;
+  nama_berkas: string;
+  file_path: string;
+  nomor_surat: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+
+export interface PermohonanSuketKematian {
+  id: string;
+  yang_meninggal: PemohonSuketKematian;
+  pemohon: PemohonSuketKematian;
+  status: string;
+  berkas_suket_kematian: BerkasPermohonanSuketKematian[];
+  created_at?: string;
+  updated_at?: string;
+  tanggal_formatted: string;
+}
+

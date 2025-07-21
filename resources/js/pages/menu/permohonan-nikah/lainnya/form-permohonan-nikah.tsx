@@ -15,7 +15,9 @@ import { FormEventHandler, useState } from 'react';
 
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
+import Stepper, { Step } from '@/components/ui/stepper';
 import { Switch } from '@/components/ui/switch';
 import { useFormError } from '@/helpers/helpers';
 import { useCapitalizeEachWord } from '@/hooks/use-capitalize-each-word';
@@ -211,6 +213,8 @@ export default function FormPermohonanNikah() {
 
     const { getNestedError } = useFormError();
 
+    const [showError, setShowError] = useState(false);
+
     const submit: FormEventHandler = (e) => {
         if (!informasiTidakDapatDiUbah || !informasiYangDiberikan) {
             e.preventDefault();
@@ -227,7 +231,7 @@ export default function FormPermohonanNikah() {
             },
             onError: (errors) => {
                 toast.error('Terjadi kesalahan saat melengkapi data!');
-                console.log(errors);
+                setShowError(true);
             },
         });
     };
@@ -783,8 +787,17 @@ export default function FormPermohonanNikah() {
     );
 
     const renderFormSectionMempelai = (label: string, key: 'pria' | 'wanita') => (
-        <Card className="mb-4">
-            <CardContent className="space-y-5">
+        <Card className="border-0 p-0 shadow-none">
+            <CardHeader>
+                <CardTitle>
+                    <Heading
+                        title={capitalize(`Formulir Data Mempelai ${key}`)}
+                        description="Silakan lengkapi data di bawah ini dengan informasi yang benar dan akurat."
+                        className="text-primary mb-8 text-center"
+                    />
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5 p-0">
                 <div className="grid gap-4 border-b pb-6 md:grid-cols-4">
                     <div className="col-span-1">
                         <CardTitle>Mempelai {label}</CardTitle>
@@ -1009,15 +1022,6 @@ export default function FormPermohonanNikah() {
                                 Tanda Tangan
                                 <Required />
                             </Label>
-                            {/* <SignaturePad
-                                defaultValue={data[key].ttd ?? undefined}
-                                onChange={(base64) =>
-                                    setData(key, {
-                                        ...data[key],
-                                        ttd: base64,
-                                    })
-                                }
-                            /> */}
                             <SignaturePad
                                 defaultValue={undefined}
                                 onChange={(file) =>
@@ -1048,7 +1052,14 @@ export default function FormPermohonanNikah() {
                             <CardTitle>Berkas yang dibutuhkan</CardTitle>
                             <CardDescription>
                                 <span>Lengkapi seluruh berkas yang diperlukan dan jadikan satu file dengan format .PDF</span>
-                                <p className="mt-4">Berikut berkas yang diperlukan dalam .PDF</p>
+                                <p className="mt-4">
+                                    Download surat pernyataan status{' '}
+                                    <a href={'/assets/surat/SURAT-PERNYATAAN-STATUS.docx'} className="text-blue-500 underline">
+                                        disini
+                                    </a>
+                                    , lalu gabungkan dengan berkas dibawah ini.
+                                </p>
+                                <p className="mt-2">Berikut berkas yang diperlukan dalam .PDF</p>
                                 <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-800">
                                     <li>Persetujuan calon mempelai</li>
                                     <li>Fotokopi KTP, catin, wali, dan saksi</li>
@@ -1095,41 +1106,49 @@ export default function FormPermohonanNikah() {
                             {!data.ayah_adalah_wali && <div className="mt-6">{renderFormSectionWaliNikah('wali_nikah')}</div>}
                         </CardContent>
                     </Card>
+                    {showError && (
+                        <Alert className="border-red-500 bg-red-100">
+                            <AlertDescription className="text-red-800">Terjadi kesalahan, mohon periksa kembali data Anda</AlertDescription>
+                        </Alert>
+                    )}
                 </div>
-                <Heading
-                    title="Formulir Data Mempelai Pria"
-                    description="Silakan lengkapi data di bawah ini dengan informasi yang benar dan akurat."
-                    className="text-primary mb-0 text-center"
-                />
-                {renderFormSectionMempelai('Pria', 'pria')}
-                <Heading
-                    title="Formulir Data Mempelai Wanita"
-                    description="Silakan lengkapi data di bawah ini dengan informasi yang benar dan akurat."
-                    className="text-primary mb-0 text-center"
-                />
-                {renderFormSectionMempelai('Wanita', 'wanita')}
-            </div>
-            <div className="mb-4 flex items-center gap-3">
-                <Checkbox
-                    id="info-valid"
-                    className="bg-white"
-                    checked={informasiYangDiberikan}
-                    onCheckedChange={() => setInformasiYangDiberikan((prev) => !prev)}
-                />
-                <Label htmlFor="info-valid">Saya mengisi informasi di atas dengan benar</Label>
+                <Stepper
+                    className="w-full"
+                    initialStep={1}
+                    onStepChange={(step) => {
+                        console.log(step);
+                    }}
+                    onFinalStepCompleted={() => console.log('All steps completed!')}
+                    backButtonText="Kembali"
+                    nextButtonText="Selanjutnya"
+                >
+                    <Step>{renderFormSectionMempelai('Pria', 'pria')}</Step>
+                    <Step>{renderFormSectionMempelai('Wanita', 'wanita')}</Step>
+                    <Step>
+                        <div className="mb-4 flex items-center gap-3">
+                            <Checkbox
+                                id="info-valid"
+                                className="bg-gray-200"
+                                checked={informasiYangDiberikan}
+                                onCheckedChange={() => setInformasiYangDiberikan((prev) => !prev)}
+                            />
+                            <Label htmlFor="info-valid">Saya mengisi informasi di atas dengan benar</Label>
+                        </div>
+
+                        <div className="mb-4 flex items-center gap-3">
+                            <Checkbox
+                                id="info-final"
+                                className="bg-gray-200"
+                                checked={informasiTidakDapatDiUbah}
+                                onCheckedChange={() => setInformasiTidakDapatDiUbah((prev) => !prev)}
+                            />
+                            <Label htmlFor="info-final">Saya mengerti bahwa informasi tidak dapat diubah setelah disubmit</Label>
+                        </div>
+                    </Step>
+                </Stepper>
             </div>
 
-            <div className="mb-4 flex items-center gap-3">
-                <Checkbox
-                    id="info-final"
-                    className="bg-white"
-                    checked={informasiTidakDapatDiUbah}
-                    onCheckedChange={() => setInformasiTidakDapatDiUbah((prev) => !prev)}
-                />
-                <Label htmlFor="info-final">Saya mengerti bahwa informasi tidak dapat diubah setelah disubmit</Label>
-            </div>
-
-            <Button type="submit">Submit</Button>
+            {/* <Button type="submit">Submit</Button> */}
         </form>
     );
 }

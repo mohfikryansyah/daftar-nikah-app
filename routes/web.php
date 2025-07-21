@@ -8,6 +8,7 @@ use App\Http\Controllers\TemplateBerkasController;
 use App\Http\Controllers\StatusPermohonanNikahController;
 use App\Http\Controllers\Catin\PermohonanNikahController as CatinPermohonanNikahController;
 use App\Http\Controllers\Global\PermohonanNikahController as GlobalPermohonanNikahController;
+use App\Http\Controllers\PemohonSuketKematianController;
 
 Route::get('/', function () {
     return Inertia::render('landing-page/landing-page');
@@ -43,14 +44,14 @@ Route::middleware(['auth'])->group(function () {
             'user',
             'latestStatus',
         ])
-            ->when(
-                isset($relevantStatus[$role]),
-                function ($query) use ($relevantStatus, $role) {
-                    $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
-                        $q->whereIn('status_permohonan', $relevantStatus[$role]);
-                    });
-                }
-            )
+            // ->when(
+            //     isset($relevantStatus[$role]),
+            //     function ($query) use ($relevantStatus, $role) {
+            //         $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+            //             $q->whereIn('status_permohonan', $relevantStatus[$role]);
+            //         });
+            //     }
+            // )
             ->latest()
             ->get();
 
@@ -82,14 +83,14 @@ Route::middleware(['auth'])->group(function () {
             'user',
             'latestStatus',
         ])
-            ->when(
-                isset($relevantStatus[$role]),
-                function ($query) use ($relevantStatus, $role) {
-                    $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
-                        $q->whereIn('status_permohonan', $relevantStatus[$role]);
-                    });
-                }
-            )
+            // ->when(
+            //     isset($relevantStatus[$role]),
+            //     function ($query) use ($relevantStatus, $role) {
+            //         $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+            //             $q->whereIn('status_permohonan', $relevantStatus[$role]);
+            //         });
+            //     }
+            // )
             ->latest()
             ->get();
 
@@ -121,20 +122,59 @@ Route::middleware(['auth'])->group(function () {
             'user',
             'latestStatus',
         ])
-            ->when(
-                isset($relevantStatus[$role]),
-                function ($query) use ($relevantStatus, $role) {
-                    $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
-                        $q->whereIn('status_permohonan', $relevantStatus[$role]);
-                    });
-                }
-            )
+            // ->when(
+            //     isset($relevantStatus[$role]),
+            //     function ($query) use ($relevantStatus, $role) {
+            //         $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+            //             $q->whereIn('status_permohonan', $relevantStatus[$role]);
+            //         });
+            //     }
+            // )
             ->latest()
             ->get();
 
 
         return Inertia::render('menu/dashboard/dashboard-kelurahan', compact('permohonanNikahChart', 'permohonanNikah'));
     })->name('dashboard.kelurahan');
+
+    Route::get('kecamatan/dashboard', function () {
+        $permohonanNikahChart = PermohonanNikah::get();
+        /** @var \App\Models\User */
+        $user = Auth::user();
+        $role = $user->getFirstRole();
+
+        if ($role !== 'kecamatan') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $relevantStatus = [
+            'kelurahan' => [
+                'Menunggu Verifikasi Kelurahan',
+                'Diverifikasi Kelurahan',
+                'Ditolak Kelurahan',
+            ],
+        ];
+
+        $permohonanNikah = PermohonanNikah::with([
+            'mempelaiPria.orangTua',
+            'mempelaiWanita.orangTua',
+            'user',
+            'latestStatus',
+        ])
+            // ->when(
+            //     isset($relevantStatus[$role]),
+            //     function ($query) use ($relevantStatus, $role) {
+            //         $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+            //             $q->whereIn('status_permohonan', $relevantStatus[$role]);
+            //         });
+            //     }
+            // )
+            ->latest()
+            ->get();
+
+
+        return Inertia::render('menu/dashboard/dashboard-kecamatan', compact('permohonanNikahChart', 'permohonanNikah'));
+    })->name('dashboard.kecamatan');
 
     Route::prefix('catin')->group(function () {
         Route::resource('permohonan-nikah', CatinPermohonanNikahController::class)
@@ -144,6 +184,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('status-permohonan-nikah', StatusPermohonanNikahController::class)
             ->parameters(['status-permohonan-nikah' => 'statusPermohonanNikah'])
             ->only('update');
+
+        Route::resource('permohonan-surat-keterangan-kematian', PemohonSuketKematianController::class)->names('catin.permohonan-surat-keterangan-kematian')->parameters(['permohonan-surat-keterangan-kematian' => 'pemohonSuketKematian']);
     });
 
     Route::prefix('global')->group(function () {

@@ -56,7 +56,10 @@ export default function PermohonanNikah({ permohonanNikah }: Props) {
                 {permohonanNikah.length == 0 ? (
                     <>
                         {hasRole(user, ['kelurahan', 'kua', 'puskesmas']) ? (
-                            <DataTable columns={columns} data={permohonanNikah} />
+                            <>
+                                <Heading className="mb-4" title="Daftar Permohonan Nikah" />
+                                <DataTable columns={columns} data={permohonanNikah} />
+                            </>
                         ) : (
                             <div className="flex h-full items-center justify-center">
                                 <div className="flex flex-col space-y-4 text-center">

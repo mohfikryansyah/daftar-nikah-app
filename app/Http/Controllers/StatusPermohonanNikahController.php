@@ -90,7 +90,7 @@ class StatusPermohonanNikahController extends Controller
                 break;
 
             case 'Ditolak Kelurahan':
-                $progress = 100;
+                $progress = 45;
                 break;
 
             case 'Diverifikasi Puskesmas':
@@ -98,7 +98,7 @@ class StatusPermohonanNikahController extends Controller
                 break;
 
             case 'Ditolak Puskesmas':
-                $progress = 100;
+                $progress = 45;
                 break;
 
             case 'Diverifikasi KUA':
@@ -106,7 +106,7 @@ class StatusPermohonanNikahController extends Controller
                 break;
 
             case 'Ditolak KUA':
-                $progress = 100;
+                $progress = 45;
                 break;
 
             case 'Selesai':
@@ -252,7 +252,7 @@ class StatusPermohonanNikahController extends Controller
                 break;
 
             case 'Ditolak Kelurahan':
-                $progress = 100;
+                $progress = 45;
                 break;
 
             case 'Diverifikasi Puskesmas':
@@ -260,7 +260,7 @@ class StatusPermohonanNikahController extends Controller
                 break;
 
             case 'Ditolak Puskesmas':
-                $progress = 100;
+                $progress = 45;
                 break;
 
             case 'Diverifikasi KUA':
@@ -268,7 +268,7 @@ class StatusPermohonanNikahController extends Controller
                 break;
 
             case 'Ditolak KUA':
-                $progress = 100;
+                $progress = 45;
                 break;
 
             case 'Selesai':
