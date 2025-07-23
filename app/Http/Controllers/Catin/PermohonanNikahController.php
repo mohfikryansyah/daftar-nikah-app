@@ -57,7 +57,9 @@ class PermohonanNikahController extends Controller
     public function store(StorePermohonanNikahRequest $request)
     {
 
-        DB::transaction(function () use ($request) {
+        DB::beginTransaction();
+
+        try {
             $userId = Auth::user()->id;
             // 1. Simpan pria
             $pria = Mempelai::create([
@@ -171,7 +173,12 @@ class PermohonanNikahController extends Controller
                 'mempelaiWanita.orangTua',
                 'user',
             ])));
-        });
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal menyimpan permohonan nikah. Silakan coba lagi.']);
+        }
 
         return to_route('catin.permohonan-nikah.index');
     }

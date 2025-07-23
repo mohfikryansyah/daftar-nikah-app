@@ -44,6 +44,7 @@ export type FormOrangTua = {
     alamat: string;
     status_hubungan: StatusHubungan;
     ttd: File | null;
+    ttdUrl: string | null;
 };
 
 export type FormWaliNikah = {
@@ -57,6 +58,7 @@ export type FormWaliNikah = {
     alamat: string;
     status_hubungan: 'Ayah Kandung' | 'Wali';
     ttd: File | null;
+    ttdUrl: string | null;
 };
 
 export type FormMempelai = {
@@ -73,6 +75,7 @@ export type FormMempelai = {
     ayah: FormOrangTua;
     ibu: FormOrangTua;
     ttd: File | null;
+    ttdUrl: string | null;
 };
 
 export type FormPermohonanNikah = {
@@ -81,6 +84,7 @@ export type FormPermohonanNikah = {
     file_path: File | null;
     ayah_adalah_wali: boolean;
     wali_nikah?: FormWaliNikah | null;
+    ttdUrl: string | null;
 };
 
 export default function FormPermohonanNikah() {
@@ -96,6 +100,7 @@ export default function FormPermohonanNikah() {
             pekerjaan: '',
             status_perkawinan: 'Jejaka',
             alamat: '',
+            ttdUrl: null,
             ayah: {
                 nama_lengkap: '',
                 nik: '',
@@ -108,6 +113,7 @@ export default function FormPermohonanNikah() {
                 alamat: '',
                 status_hubungan: 'Ayah' as StatusHubungan,
                 ttd: null as File | null,
+                ttdUrl: null,
             },
             ibu: {
                 nama_lengkap: '',
@@ -121,6 +127,7 @@ export default function FormPermohonanNikah() {
                 alamat: '',
                 status_hubungan: 'Ibu' as StatusHubungan,
                 ttd: null as File | null,
+                ttdUrl: null,
             },
             ttd: null as File | null,
         },
@@ -135,6 +142,7 @@ export default function FormPermohonanNikah() {
             pekerjaan: '',
             status_perkawinan: 'Perawan',
             alamat: '',
+            ttdUrl: null,
             ayah: {
                 nama_lengkap: '',
                 nik: '',
@@ -147,6 +155,7 @@ export default function FormPermohonanNikah() {
                 alamat: '',
                 status_hubungan: 'Ayah' as StatusHubungan,
                 ttd: null as File | null,
+                ttdUrl: null,
             },
             ibu: {
                 nama_lengkap: '',
@@ -160,6 +169,7 @@ export default function FormPermohonanNikah() {
                 alamat: '',
                 status_hubungan: 'Ibu' as StatusHubungan,
                 ttd: null as File | null,
+                ttdUrl: null,
             },
             ttd: null as File | null,
         },
@@ -176,7 +186,9 @@ export default function FormPermohonanNikah() {
             alamat: '',
             status_hubungan: 'Wali',
             ttd: null as File | null,
+            ttdUrl: null,
         },
+        ttdUrl: null,
     });
 
     transform((data) => ({
@@ -257,7 +269,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder={'Adnan Maulana Pakaya'}
                         value={data.wali_nikah?.nama_lengkap}
                         onChange={(e) =>
                             setData(key, {
@@ -276,7 +287,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder={'Adnan Maulana Pakaya'}
                         value={data.wali_nikah?.nama_ayah}
                         onChange={(e) =>
                             setData(key, {
@@ -295,7 +305,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Gorontalo"
                         value={data.wali_nikah?.tempat_lahir}
                         onChange={(e) =>
                             setData(key, {
@@ -353,7 +362,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Petani"
                         value={data.wali_nikah?.pekerjaan}
                         onChange={(e) =>
                             setData(key, {
@@ -396,7 +404,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Indonesia"
                         value={data.wali_nikah?.kewarganegaraan}
                         onChange={(e) =>
                             setData(key, {
@@ -415,7 +422,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Jl. Usman Isa, Kel. Lekobalo Kec. Kota Barat "
                         value={data.wali_nikah?.alamat}
                         onChange={(e) =>
                             setData(key, {
@@ -465,13 +471,28 @@ export default function FormPermohonanNikah() {
                         }
                     /> */}
                     <SignaturePad
-                        defaultValue={undefined}
-                        onChange={(file) =>
-                            setData(key, {
-                                ...data[key]!,
-                                ttd: file,
-                            })
-                        }
+                        defaultValue={data[key]?.ttdUrl ?? undefined}
+                        onChange={(file) => {
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    setData(key, {
+                                        ...data[key]!,
+                                        ttd: file,
+                                        ttdUrl: reader.result as string,
+                                    });
+                                };
+                                reader.readAsDataURL(file);
+                            } else {
+                                setData(key, {
+                                    ...data[key]!,
+                                    ttd: null,
+                                    ttdUrl: null,
+                                });
+                            }
+                        }}
+
+                        
                     />
                     <InputError message={getNestedError(`${key}`, 'nama_lengkap')}></InputError>
                 </div>
@@ -495,7 +516,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder={orangTuaDari === 'pria' ? 'Adnan Maulana Pakaya' : 'Siti Nurhaliza Ahmad'}
                         value={data[orangTuaDari][ayahAtauIbu].nama_lengkap}
                         onChange={(e) =>
                             setData(orangTuaDari, {
@@ -519,7 +539,6 @@ export default function FormPermohonanNikah() {
                         type="number"
                         minLength={16}
                         maxLength={16}
-                        placeholder="7571050102050006"
                         value={data[orangTuaDari][ayahAtauIbu].nik}
                         onChange={(e) =>
                             setData(orangTuaDari, {
@@ -569,7 +588,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Gorontalo"
                         value={data[orangTuaDari][ayahAtauIbu].tempat_lahir}
                         onChange={(e) =>
                             setData(orangTuaDari, {
@@ -633,7 +651,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Petani"
                         value={data[orangTuaDari][ayahAtauIbu].pekerjaan}
                         onChange={(e) =>
                             setData(orangTuaDari, {
@@ -682,7 +699,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Indonesia"
                         value={data[orangTuaDari][ayahAtauIbu].kewarganegaraan}
                         onChange={(e) =>
                             setData(orangTuaDari, {
@@ -736,7 +752,6 @@ export default function FormPermohonanNikah() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Jl. Usman Isa, Kel. Lekobalo Kec. Kota Barat "
                         value={data[orangTuaDari][ayahAtauIbu].alamat}
                         onChange={(e) =>
                             setData(orangTuaDari, {
@@ -769,16 +784,32 @@ export default function FormPermohonanNikah() {
                         }
                     /> */}
                     <SignaturePad
-                        defaultValue={undefined}
-                        onChange={(file) =>
-                            setData(orangTuaDari, {
-                                ...data[orangTuaDari],
-                                [ayahAtauIbu]: {
-                                    ...data[orangTuaDari][ayahAtauIbu],
-                                    ttd: file,
-                                },
-                            })
-                        }
+                        defaultValue={data[orangTuaDari][ayahAtauIbu].ttdUrl ?? undefined}
+                        onChange={(file) => {
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    setData(orangTuaDari, {
+                                        ...data[orangTuaDari]!,
+                                        [ayahAtauIbu]: {
+                                            ...data[orangTuaDari][ayahAtauIbu],
+                                            ttd: file,
+                                            ttdUrl: reader.result as string,
+                                        },
+                                    });
+                                };
+                                reader.readAsDataURL(file);
+                            } else {
+                                setData(orangTuaDari, {
+                                    ...data[orangTuaDari]!,
+                                    [ayahAtauIbu]: {
+                                        ...data[orangTuaDari][ayahAtauIbu],
+                                        ttd: null,
+                                        ttdUrl: null,
+                                    },
+                                });
+                            }
+                        }}
                     />
                     <InputError message={getNestedError(`${orangTuaDari}`, `${ayahAtauIbu}`, 'ttd')}></InputError>
                 </div>
@@ -811,7 +842,6 @@ export default function FormPermohonanNikah() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder={key === 'pria' ? 'Adnan Maulana Pakaya' : 'Siti Nurhaliza Ahmad'}
                                 value={data[key].nama_lengkap}
                                 onChange={(e) =>
                                     setData(key, {
@@ -832,7 +862,6 @@ export default function FormPermohonanNikah() {
                                 type="number"
                                 minLength={16}
                                 maxLength={16}
-                                placeholder="7571050102050006"
                                 value={data[key].nik}
                                 onChange={(e) =>
                                     setData(key, {
@@ -873,7 +902,6 @@ export default function FormPermohonanNikah() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder="Gorontalo"
                                 value={data[key].tempat_lahir}
                                 onChange={(e) =>
                                     setData(key, {
@@ -931,7 +959,6 @@ export default function FormPermohonanNikah() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder="Petani"
                                 value={data[key].pekerjaan}
                                 onChange={(e) =>
                                     setData(key, {
@@ -965,7 +992,6 @@ export default function FormPermohonanNikah() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder="Indonesia"
                                 value={data[key].kewarganegaraan}
                                 onChange={(e) =>
                                     setData(key, {
@@ -1005,7 +1031,6 @@ export default function FormPermohonanNikah() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder="Jl. Usman Isa, Kel. Lekobalo Kec. Kota Barat "
                                 value={data[key].alamat}
                                 onChange={(e) =>
                                     setData(key, {
@@ -1023,13 +1048,26 @@ export default function FormPermohonanNikah() {
                                 <Required />
                             </Label>
                             <SignaturePad
-                                defaultValue={undefined}
-                                onChange={(file) =>
-                                    setData(key, {
-                                        ...data[key],
-                                        ttd: file,
-                                    })
-                                }
+                                defaultValue={data[key]?.ttdUrl ?? undefined}
+                                onChange={(file) => {
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => {
+                                            setData(key, {
+                                                ...data[key]!,
+                                                ttd: file,
+                                                ttdUrl: reader.result as string,
+                                            });
+                                        };
+                                        reader.readAsDataURL(file);
+                                    } else {
+                                        setData(key, {
+                                            ...data[key]!,
+                                            ttd: null,
+                                            ttdUrl: null,
+                                        });
+                                    }
+                                }}
                             />
                             <InputError message={getNestedError(`${key}`, 'ttd')}></InputError>
                         </div>
