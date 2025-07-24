@@ -195,30 +195,37 @@ export default function FormPermohonanNikah() {
         ...data,
         pria: {
             ...data.pria,
+            ttdUrl: null,
             tanggal_lahir: data.pria.tanggal_lahir ? format(new Date(data.pria.tanggal_lahir), 'yyyy-MM-dd') : undefined,
             ayah: {
                 ...data.pria.ayah,
+                ttdUrl: null,
                 tanggal_lahir: data.pria.ayah.tanggal_lahir ? format(new Date(data.pria.ayah.tanggal_lahir), 'yyyy-MM-dd') : undefined,
             },
             ibu: {
                 ...data.pria.ibu,
+                ttdUrl: null,
                 tanggal_lahir: data.pria.ibu.tanggal_lahir ? format(new Date(data.pria.ibu.tanggal_lahir), 'yyyy-MM-dd') : undefined,
             },
         },
         wanita: {
             ...data.wanita,
+            ttdUrl: null,
             tanggal_lahir: data.wanita.tanggal_lahir ? format(new Date(data.wanita.tanggal_lahir), 'yyyy-MM-dd') : undefined,
             ayah: {
                 ...data.wanita.ayah,
+                ttdUrl: null,
                 tanggal_lahir: data.wanita.ayah.tanggal_lahir ? format(new Date(data.wanita.ayah.tanggal_lahir), 'yyyy-MM-dd') : undefined,
             },
             ibu: {
                 ...data.wanita.ibu,
+                ttdUrl: null,
                 tanggal_lahir: data.wanita.ibu.tanggal_lahir ? format(new Date(data.wanita.ibu.tanggal_lahir), 'yyyy-MM-dd') : undefined,
             },
         },
         wali_nikah: {
             ...data.wali_nikah,
+            ttdUrl: null,
             tanggal_lahir: data.wali_nikah?.tanggal_lahir ? format(new Date(data.wali_nikah?.tanggal_lahir), 'yyyy-MM-dd') : undefined,
         },
     }));
