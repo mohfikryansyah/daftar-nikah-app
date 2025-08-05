@@ -67,7 +67,7 @@ export default function ShowPermohonanNikah() {
                                 </div>
                             </CardContent>
                         </Card>
-                        {hasRole(user, ['kecamatan', 'catin']) && <AksiPermohonanSuketKematianKecamatan permohonanSuketKematian={permohonanSuketKematian} templateBerkas={templateBerkas} />}
+                        {hasRole(user, ['kelurahan']) && <AksiPermohonanSuketKematianKecamatan permohonanSuketKematian={permohonanSuketKematian} templateBerkas={templateBerkas} />}
                     </div>
                 </div>
             </div>

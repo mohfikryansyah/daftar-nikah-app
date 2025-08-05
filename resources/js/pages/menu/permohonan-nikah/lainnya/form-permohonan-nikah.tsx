@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem, JenisKelamin, StatusHubungan, StatusPerkawinan } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
@@ -85,6 +85,7 @@ export type FormPermohonanNikah = {
     ayah_adalah_wali: boolean;
     wali_nikah?: FormWaliNikah | null;
     ttdUrl: string | null;
+    tanggal_pernikahan: Date | undefined;
 };
 
 export default function FormPermohonanNikah() {
@@ -189,6 +190,7 @@ export default function FormPermohonanNikah() {
             ttdUrl: null,
         },
         ttdUrl: null,
+        tanggal_pernikahan: undefined,
     });
 
     transform((data) => ({
@@ -228,6 +230,7 @@ export default function FormPermohonanNikah() {
             ttdUrl: null,
             tanggal_lahir: data.wali_nikah?.tanggal_lahir ? format(new Date(data.wali_nikah?.tanggal_lahir), 'yyyy-MM-dd') : undefined,
         },
+        tanggal_pernikahan: data.tanggal_pernikahan ? format(new Date(data.tanggal_pernikahan), 'yyyy-MM-dd') : undefined
     }));
 
     const { getNestedError } = useFormError();
@@ -498,8 +501,6 @@ export default function FormPermohonanNikah() {
                                 });
                             }
                         }}
-
-                        
                     />
                     <InputError message={getNestedError(`${key}`, 'nama_lengkap')}></InputError>
                 </div>
@@ -1021,11 +1022,10 @@ export default function FormPermohonanNikah() {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectItem value="Perawan">Perawan</SelectItem>
-                                        <SelectItem value="Jejaka">Jejaka</SelectItem>
+                                        <SelectItem value="Perawan" disabled={key === 'pria'}>Perawan</SelectItem>
+                                        <SelectItem value="Jejaka" disabled={key === 'wanita'}>Jejaka</SelectItem>
                                         <SelectItem value="Cerai Hidup">Cerai Hidup</SelectItem>
                                         <SelectItem value="Cerai Mati">Cerai Mati</SelectItem>
-                                        <SelectItem value="Lainnya">Lainnya</SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -1132,6 +1132,46 @@ export default function FormPermohonanNikah() {
                                     />
                                     <InputError message={errors.file_path} />
                                 </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardContent>
+                            <div className="flex flex-col space-y-2">
+                                <Label>
+                                    Tanggal Pernikahan
+                                    <Required />
+                                </Label>
+                                <Popover modal={true}>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant={'outline'}
+                                            className={cn(
+                                                'w-full bg-transparent pl-3 text-left font-normal',
+                                                !data.tanggal_pernikahan && 'text-muted-foreground',
+                                            )}
+                                        >
+                                            {data.tanggal_pernikahan ? (
+                                                format(data.tanggal_pernikahan, 'PPP', { locale: id })
+                                            ) : (
+                                                <span>Pilih tanggal</span>
+                                            )}
+                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="start">
+                                        <Calendar
+                                            mode="single"
+                                            required
+                                            selected={data.tanggal_pernikahan}
+                                            onSelect={(date) => {
+                                                setData('tanggal_pernikahan', date);
+                                            }}
+                                            initialFocus
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <InputError message={getNestedError('tanggal_pernikahan')}></InputError>
                             </div>
                         </CardContent>
                     </Card>

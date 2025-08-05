@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignUuid('mempelai_pria_id')->constrained('mempelais')->onDelete('cascade');
             $table->foreignUuid('mempelai_wanita_id')->constrained('mempelais')->onDelete('cascade');
+            $table->date('tanggal_pernikahan');
             $table->boolean('ayah_adalah_wali')->default(true);
             $table->integer('progress')->default(20);
             $table->timestamps();

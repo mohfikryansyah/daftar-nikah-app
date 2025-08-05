@@ -35,11 +35,6 @@ export const useFormError = () => {
   };
 };
 
-
-// export function hasRole(user: User, role: string): boolean {
-//     return user.roles.includes(role);
-// }
-
 export function hasRole(user: User, roles: string[]) {
     return user.roles.some(r => roles.includes(r));
 }

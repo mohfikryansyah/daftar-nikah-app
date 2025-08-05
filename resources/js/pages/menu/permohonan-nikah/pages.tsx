@@ -94,7 +94,7 @@ export default function PermohonanNikah({ permohonanNikah }: Props) {
                     </>
                 ) : (
                     <div>
-                        {hasRole(user, ['kelurahan', 'kua', 'puskesmas']) ? (
+                        {hasRole(user, ['kelurahan', 'kua', 'puskesmas', 'kecamatan']) ? (
                             <DataTable columns={columns} data={permohonanNikah} />
                         ) : (
                             <>

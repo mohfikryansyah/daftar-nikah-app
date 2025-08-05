@@ -42,13 +42,13 @@ const mainNavItems: NavItem[] = [
         title: 'Permohonan Suket Kematian',
         href: route('catin.permohonan-surat-keterangan-kematian.index'),
         icon: HeartHandshake,
-        roles: ['catin', 'kecamatan']
+        roles: ['catin', 'kelurahan']
     },
     {
         title: 'Permohonan Nikah',
         href: route('global.permohonan-nikah.index'),
         icon: HeartHandshake,
-        roles: ['kelurahan', 'puskesmas', 'kua']
+        roles: ['kelurahan', 'puskesmas', 'kua', 'kecamatan']
     },
     {
         title: 'Template Berkas',

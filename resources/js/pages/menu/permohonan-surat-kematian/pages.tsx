@@ -16,7 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function SuratKeteranganKematian() {
     const { permohonanSuketKematian } = usePage<{ permohonanSuketKematian: PermohonanSuketKematian[] }>().props;
     const { user } = usePage<SharedData>().props.auth;
-    console.log(permohonanSuketKematian)
+    
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Permohonan Surat Kematian" />

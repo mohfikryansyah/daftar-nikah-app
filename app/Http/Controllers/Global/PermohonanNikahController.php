@@ -18,7 +18,7 @@ class PermohonanNikahController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:kelurahan|puskesmas|kua');
+        $this->middleware('role:kelurahan|puskesmas|kua|kecamatan');
     }
     /**
      * Display a listing of the resource.
@@ -45,6 +45,14 @@ class PermohonanNikahController extends Controller
                 'Diverifikasi KUA',
                 'Ditolak KUA',
             ],
+            'kecamatan' => [
+                'Menunggu Verifikasi Kelurahan',
+                'Diverifikasi Kelurahan',
+                'Ditolak Kelurahan',
+                'Diverifikasi Puskesmas',
+                'Ditolak Puskesmas',
+                'Diverifikasi Puskesmas',
+            ],
         ];
 
         $permohonanNikah = PermohonanNikah::with([
@@ -54,22 +62,32 @@ class PermohonanNikahController extends Controller
             'latestStatus',
         ])
             ->when(
-                isset($relevantStatus[$role]),
-                function ($query) use ($relevantStatus, $role) {
-                    $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
-                        $q->whereIn('status_permohonan', $relevantStatus[$role]);
+                $role === 'kecamatan',
+                function ($query) use ($relevantStatus) {
+                    $query->where(function ($q) use ($relevantStatus) {
+                        $q->whereHas('latestStatus', function ($statusQuery) use ($relevantStatus) {
+                            $statusQuery->whereIn('status_permohonan', $relevantStatus['kecamatan']);
+                        })
+                            ->orWhereRaw('DATEDIFF(tanggal_pernikahan, DATE(created_at)) <= 10');
                     });
+                },
+                function ($query) use ($relevantStatus, $role) {
+                    if (isset($relevantStatus[$role])) {
+                        $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+                            $q->whereIn('status_permohonan', $relevantStatus[$role]);
+                        });
+                    }
                 }
             )
             ->latest()
             ->get();
 
 
-
         return Inertia::render('menu/permohonan-nikah/pages', [
             'permohonanNikah' => $permohonanNikah
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

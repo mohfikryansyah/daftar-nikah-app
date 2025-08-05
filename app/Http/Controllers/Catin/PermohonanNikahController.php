@@ -56,7 +56,6 @@ class PermohonanNikahController extends Controller
      */
     public function store(StorePermohonanNikahRequest $request)
     {
-
         DB::beginTransaction();
 
         try {
@@ -118,6 +117,7 @@ class PermohonanNikahController extends Controller
                 'user_id' => $userId,
                 'mempelai_pria_id' => $pria->id,
                 'mempelai_wanita_id' => $wanita->id,
+                'tanggal_pernikahan' => $request->tanggal_pernikahan,
             ]);
 
             StatusPermohonanNikah::create([
