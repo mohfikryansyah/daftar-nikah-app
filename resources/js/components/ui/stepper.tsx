@@ -13,6 +13,7 @@ interface StepperProps extends HTMLAttributes<HTMLDivElement> {
   initialStep?: number;
   onStepChange?: (step: number) => void;
   onFinalStepCompleted?: () => void;
+  onProcessing: boolean;
   stepCircleContainerClassName?: string;
   stepContainerClassName?: string;
   contentClassName?: string;
@@ -34,6 +35,7 @@ export default function Stepper({
   initialStep = 1,
   onStepChange = () => {},
   onFinalStepCompleted = () => {},
+  onProcessing = false,
   stepCircleContainerClassName = "",
   stepContainerClassName = "",
   contentClassName = "",
@@ -158,6 +160,7 @@ const isFinalStep = currentStep > totalSteps - 1;
                 </button>
               )}
               <button
+                disabled={onProcessing ? true : false}
                 type={isFinalStep ? "submit" : "button"}
                 onClick={isLastStep ? undefined : handleNext}
                 className="duration-350 flex items-center justify-center rounded-full bg-primary py-1.5 px-3.5 font-medium tracking-tight text-white transition hover:bg-primary/ active:bg-primary"

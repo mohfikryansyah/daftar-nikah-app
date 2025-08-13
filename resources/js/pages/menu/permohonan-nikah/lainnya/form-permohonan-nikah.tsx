@@ -1198,6 +1198,7 @@ export default function FormPermohonanNikah() {
                     )}
                 </div>
                 <Stepper
+                    onProcessing={processing}
                     className="w-full"
                     initialStep={1}
                     onStepChange={(step) => {

@@ -41,7 +41,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Permohonan Suket Kematian',
         href: route('catin.permohonan-surat-keterangan-kematian.index'),
-        icon: HeartHandshake,
+        icon: FileText,
         roles: ['catin', 'kelurahan']
     },
     {

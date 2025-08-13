@@ -44,14 +44,14 @@ Route::middleware(['auth'])->group(function () {
             'user',
             'latestStatus',
         ])
-            // ->when(
-            //     isset($relevantStatus[$role]),
-            //     function ($query) use ($relevantStatus, $role) {
-            //         $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
-            //             $q->whereIn('status_permohonan', $relevantStatus[$role]);
-            //         });
-            //     }
-            // )
+            ->when(
+                isset($relevantStatus[$role]),
+                function ($query) use ($relevantStatus, $role) {
+                    $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+                        $q->whereIn('status_permohonan', $relevantStatus[$role]);
+                    });
+                }
+            )
             ->latest()
             ->get();
 
@@ -83,14 +83,14 @@ Route::middleware(['auth'])->group(function () {
             'user',
             'latestStatus',
         ])
-            // ->when(
-            //     isset($relevantStatus[$role]),
-            //     function ($query) use ($relevantStatus, $role) {
-            //         $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
-            //             $q->whereIn('status_permohonan', $relevantStatus[$role]);
-            //         });
-            //     }
-            // )
+            ->when(
+                isset($relevantStatus[$role]),
+                function ($query) use ($relevantStatus, $role) {
+                    $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+                        $q->whereIn('status_permohonan', $relevantStatus[$role]);
+                    });
+                }
+            )
             ->latest()
             ->get();
 
@@ -122,14 +122,14 @@ Route::middleware(['auth'])->group(function () {
             'user',
             'latestStatus',
         ])
-            // ->when(
-            //     isset($relevantStatus[$role]),
-            //     function ($query) use ($relevantStatus, $role) {
-            //         $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
-            //             $q->whereIn('status_permohonan', $relevantStatus[$role]);
-            //         });
-            //     }
-            // )
+            ->when(
+                isset($relevantStatus[$role]),
+                function ($query) use ($relevantStatus, $role) {
+                    $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+                        $q->whereIn('status_permohonan', $relevantStatus[$role]);
+                    });
+                }
+            )
             ->latest()
             ->get();
 
@@ -148,9 +148,10 @@ Route::middleware(['auth'])->group(function () {
         }
 
         $relevantStatus = [
-            'kelurahan' => [
+            'kecamatan' => [
                 'Menunggu Verifikasi Kelurahan',
                 'Diverifikasi Kelurahan',
+                'Diverifikasi Puskesmas',
                 'Ditolak Kelurahan',
             ],
         ];
@@ -161,14 +162,24 @@ Route::middleware(['auth'])->group(function () {
             'user',
             'latestStatus',
         ])
-            // ->when(
-            //     isset($relevantStatus[$role]),
-            //     function ($query) use ($relevantStatus, $role) {
-            //         $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
-            //             $q->whereIn('status_permohonan', $relevantStatus[$role]);
-            //         });
-            //     }
-            // )
+            ->when(
+                $role === 'kecamatan',
+                function ($query) use ($relevantStatus) {
+                    $query->where(function ($q) use ($relevantStatus) {
+                        $q->whereHas('latestStatus', function ($statusQuery) use ($relevantStatus) {
+                            $statusQuery->whereIn('status_permohonan', $relevantStatus['kecamatan']);
+                        })
+                            ->orWhereRaw('DATEDIFF(tanggal_pernikahan, DATE(created_at)) <= 10');
+                    });
+                },
+                function ($query) use ($relevantStatus, $role) {
+                    if (isset($relevantStatus[$role])) {
+                        $query->whereHas('latestStatus', function ($q) use ($relevantStatus, $role) {
+                            $q->whereIn('status_permohonan', $relevantStatus[$role]);
+                        });
+                    }
+                }
+            )
             ->latest()
             ->get();
 
@@ -202,6 +213,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::put('status-permohonan-nikah/{statusPermohonanNikah}/update-kua', [StatusPermohonanNikahController::class, 'updateKUA'])
             ->name('status-permohonan-nikah.update-kua');
+
+        Route::put('status-permohonan-nikah/{statusPermohonanNikah}/update-kecamatan', [StatusPermohonanNikahController::class, 'updateKecamatan'])
+            ->name('status-permohonan-nikah.update-kecamatan');
     });
 
     Route::prefix('kelurahan')->group(function () {

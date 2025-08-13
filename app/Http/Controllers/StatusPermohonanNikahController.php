@@ -171,6 +171,8 @@ class StatusPermohonanNikahController extends Controller
             $tandaTanganPathOrtuWanita_L = Storage::disk('public')->path($permohonanNikah->tandaTangan->ttd_ortu_l_mempelai_wanita);
             $tandaTanganPathOrtuWanita_P = Storage::disk('public')->path($permohonanNikah->tandaTangan->ttd_ortu_p_mempelai_wanita);
 
+            $templateProcessor->setValue('${hari_ini}', Carbon::now()->locale('id')->translatedFormat('d F Y'));
+
             $this->setValueTandaTangan($templateProcessor, $tandaTanganPathCatinPria, 'catin_l');
             $this->setValueTandaTangan($templateProcessor, $tandaTanganPathCatinWanita, 'catin_p');
             $this->setValueTandaTangan($templateProcessor, $tandaTanganPathOrtuPria_L, 'ayah_pria');
@@ -206,6 +208,7 @@ class StatusPermohonanNikahController extends Controller
                 'permohonan_nikah_id' => $permohonanNikah->id,
                 'dibuat_oleh' => Auth::user()->id,
                 'nama_berkas' => 'Surat Keterangan Nikah' . ' - ' . $permohonanNikah->user->name . '-' . now()->timestamp,
+                'nomor_surat' => $validatedData['nomor_surat'],
                 'file_path' => $outputPath,
             ]);
 
@@ -425,6 +428,81 @@ class StatusPermohonanNikahController extends Controller
         return back();
     }
 
+    public function updateKecamatan(Request $request, StatusPermohonanNikah $statusPermohonanNikah)
+    {
+        $validatedData = $request->validate([
+            'berkas_permohonan' => 'required',
+            'nomor_surat' => 'required',
+        ]);
+
+        $permohonanNikah = PermohonanNikah::with(['mempelaiPria.orangTua', 'mempelaiWanita.orangTua', 'user', 'tandaTangan'])
+            ->where('id', $statusPermohonanNikah->permohonan_nikah_id)
+            ->first();
+
+        $templatePath = Storage::disk('public')->path($validatedData['berkas_permohonan']);
+
+        if (!Storage::disk('public')->exists($validatedData['berkas_permohonan'])) {
+            return back()->with('error', 'berkas tidak ditemukan');
+        }
+
+        $templateProcessor = new TemplateProcessor($templatePath);
+
+        $this->setValueDataCatin($templateProcessor, $permohonanNikah->mempelaiPria, 'catin_l');
+        $this->setValueDataCatin($templateProcessor, $permohonanNikah->mempelaiWanita, 'catin_p');
+
+        $templateProcessor->setValue('${nomor_surat}', $validatedData['nomor_surat']);
+
+        $templateProcessor->setValue('${hari_ini}', Carbon::now()->locale('id')->translatedFormat('d F Y'));
+
+        $berkasDariKelurahan = BerkasPermohonanNikah::where('permohonan_nikah_id', $permohonanNikah->id)->first();
+
+        $templateProcessor->setValue('${berkas_created_at}', $berkasDariKelurahan->created_at->locale('id')->translatedFormat('d F Y'));
+        $templateProcessor->setValue('${berkas_nomor_surat}', $berkasDariKelurahan->nomor_surat);
+
+        $outputPath = 'generated-berkas/Surat Keterangan Dispensasi - ' . $permohonanNikah->user->name . ' - ' . now()->timestamp . '.docx';
+
+        $berkasLama = BerkasPermohonanNikah::where('permohonan_nikah_id', $permohonanNikah->id)
+            ->where('dibuat_oleh', Auth::user()->id)
+            ->first();
+
+        if ($berkasLama) {
+            if (Storage::disk('public')->exists($berkasLama->file_path)) {
+                Storage::disk('public')->delete($berkasLama->file_path);
+            }
+            $berkasLama->delete();
+        }
+
+        $templateProcessor->saveAs(Storage::disk('public')->path($outputPath));
+
+        BerkasPermohonanNikah::create([
+            'permohonan_nikah_id' => $permohonanNikah->id,
+            'dibuat_oleh' => Auth::user()->id,
+            'nama_berkas' => 'Surat Keterangan Dispensasi' . ' - ' . $permohonanNikah->user->name . '-' . now()->timestamp,
+            'nomor_surat' => $validatedData['nomor_surat'],
+            'file_path' => $outputPath,
+        ]);
+
+        $userPuskesmas = User::role('puskesmas')->first();
+
+        Mail::to('moh.fikryansyah@gmail.com')->send(new NotifikasiPermohonanNikah($permohonanNikah->load([
+            'mempelaiPria.orangTua',
+            'mempelaiWanita.orangTua',
+            'user',
+        ])));
+
+        $userPemohon = User::where('id', $permohonanNikah->user_id)->first();
+
+        Mail::to($userPemohon->email)->send(new NotifikasiProsesPermohonanNikahKelurahan($permohonanNikah->load([
+            'mempelaiPria.orangTua',
+            'mempelaiWanita.orangTua',
+            'user',
+        ])));
+
+        return back();
+    }
+
+
+
     /**
      * Remove the specified resource from storage.
      */
@@ -449,6 +527,7 @@ class StatusPermohonanNikahController extends Controller
         $templateProcessor->setValue('${agama_' . $suffix . '}', $mempelai->agama);
         $templateProcessor->setValue('${pekerjaan_' . $suffix . '}', $mempelai->pekerjaan);
         $templateProcessor->setValue('${alamat_' . $suffix . '}', $mempelai->alamat);
+        $templateProcessor->setValue('${status_perkawinan_' . $suffix . '}', $mempelai->status_perkawinan);
     }
 
     private function setValueDataOrangTua($templateProcessor, $ibuAtauAyah, $data, $ortuDari)

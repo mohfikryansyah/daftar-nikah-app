@@ -5,6 +5,7 @@ import AppLayout from '@/layouts/app-layout';
 import { getFileIcon, strLimit } from '@/lib/utils';
 import { BreadcrumbItem, PermohonanNikah, SharedData, TemplateBerkas } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
+import AksiPermohonanNikahKecamatan from './lainnya/aksi-kecamatan';
 import AksiPermohonanNikahKelurahan from './lainnya/aksi-kelurahan';
 import AksiPermohonanNikahKUA from './lainnya/aksi-kua';
 import AksiPermohonanNikahPuskesmas from './lainnya/aksi-puskesmas';
@@ -87,6 +88,9 @@ export default function ShowPermohonanNikah() {
                             <AksiPermohonanNikahPuskesmas permohonanNikah={permohonanNikah} templateBerkas={templateBerkas} />
                         )}
                         {hasRole(user, ['kua']) && <AksiPermohonanNikahKUA permohonanNikah={permohonanNikah} templateBerkas={templateBerkas} />}
+                        {hasRole(user, ['kecamatan']) && (
+                            <AksiPermohonanNikahKecamatan permohonanNikah={permohonanNikah} templateBerkas={templateBerkas} />
+                        )}
                     </div>
                 </div>
             </div>
