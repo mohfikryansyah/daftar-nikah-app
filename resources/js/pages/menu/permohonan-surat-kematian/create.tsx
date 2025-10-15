@@ -142,7 +142,6 @@ export default function CreateSuratKeteranganKematian() {
                     </Label>
                     <Input
                         type="text"
-                        placeholder="Contoh: Rumah"
                         value={data[key].tempat_meninggal}
                         onChange={(e) =>
                             setData(key, {
@@ -212,7 +211,6 @@ export default function CreateSuratKeteranganKematian() {
                                 type="number"
                                 minLength={16}
                                 maxLength={16}
-                                placeholder="7571050102050006"
                                 value={data[key].nik}
                                 onChange={(e) =>
                                     setData(key, {
@@ -231,7 +229,6 @@ export default function CreateSuratKeteranganKematian() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder="Gorontalo"
                                 value={data[key].tempat_lahir}
                                 onChange={(e) =>
                                     setData(key, {
@@ -289,7 +286,6 @@ export default function CreateSuratKeteranganKematian() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder="Petani"
                                 value={data[key].pekerjaan}
                                 onChange={(e) =>
                                     setData(key, {
@@ -305,12 +301,16 @@ export default function CreateSuratKeteranganKematian() {
                             <Label>Agama</Label>
                             <Select defaultValue={data[key].agama} onValueChange={(value) => setData(key, { ...data[key], agama: value })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Pilih Agama" />
+                                    <SelectValue placeholder="Pilih" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
                                         <SelectItem value="Islam">Islam</SelectItem>
-                                        <SelectItem value="Kristen">Kristen</SelectItem>
+                                        <SelectItem value="Kristen Protestan">Kristen Protestan</SelectItem>
+                                        <SelectItem value="Katolik">Katolik</SelectItem>
+                                        <SelectItem value="Hindu">Hindu</SelectItem>
+                                        <SelectItem value="Buddha">Buddha</SelectItem>
+                                        <SelectItem value="Konghucu">Konghucu</SelectItem>
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -323,7 +323,6 @@ export default function CreateSuratKeteranganKematian() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder="Indonesia"
                                 value={data[key].kewarganegaraan}
                                 onChange={(e) =>
                                     setData(key, {
@@ -360,7 +359,6 @@ export default function CreateSuratKeteranganKematian() {
                             </Label>
                             <Input
                                 type="text"
-                                placeholder="Jl. Usman Isa, Kel. Lekobalo Kec. Kota Barat "
                                 value={data[key].alamat}
                                 onChange={(e) =>
                                     setData(key, {

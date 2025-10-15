@@ -69,14 +69,14 @@ export default function AksiPermohonanSuketKematianKecamatan({
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectItem value="Menunggu verifikasi">Menunggu verifikasi</SelectItem>
-                                    <SelectItem value="Diverifikasi Kecamatan">Diverifikasi Kecamatan</SelectItem>
-                                    <SelectItem value="Ditolak Kecamatan">Ditolak Kecamatan</SelectItem>
+                                    <SelectItem value="Diverifikasi Kelurahan">Diverifikasi Kelurahan</SelectItem>
+                                    <SelectItem value="Ditolak Kelurahan">Ditolak Kelurahan</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
                         <InputError message={errors.status_permohonan}></InputError>
                     </div>
-                    {data.status_permohonan === 'Diverifikasi Kecamatan' && (
+                    {data.status_permohonan === 'Diverifikasi Kelurahan' && (
                         <>
                             <div className="grid gap-2">
                                 <Label>

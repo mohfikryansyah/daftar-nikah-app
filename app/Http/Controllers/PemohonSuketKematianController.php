@@ -31,21 +31,13 @@ class PemohonSuketKematianController extends Controller
         $user = Auth::user();
         $role = $user->getFirstRole();
 
-        if ($role === 'kecamatan') {
+        if ($role === 'kelurahan') {
             $permohonanSuketKematian = PermohonanSuketKematian::with([
                 'yangMeninggal.user',
                 'pemohon.user',
                 'berkasSuketKematian'
             ])->get();
         } elseif ($role === 'catin') {
-            $permohonanSuketKematian = PermohonanSuketKematian::whereHas('yangMeninggal.user', function ($query) {
-                $query->where('id', Auth::user()->id);
-            })->with([
-                'yangMeninggal.user',
-                'pemohon.user',
-                'berkasSuketKematian'
-            ])->get();
-        } else {
             $permohonanSuketKematian = PermohonanSuketKematian::whereHas('yangMeninggal.user', function ($query) {
                 $query->where('id', Auth::user()->id);
             })->with([
@@ -81,13 +73,11 @@ class PemohonSuketKematianController extends Controller
                 ...$request->input('yang_meninggal'),
             ]);
 
-            // 2. Buat yang bertanda tangan
             $pemohon = PemohonSuketKematian::create([
                 'user_id' => Auth::user()->id,
                 ...$request->input('pemohon'),
             ]);
 
-            // 3. Buat permohonan surat
             $permohonan = PermohonanSuketKematian::create([
                 'yang_meninggal' => $yangMeninggal->id,
                 'pemohon' => $pemohon->id,
@@ -130,10 +120,10 @@ class PemohonSuketKematianController extends Controller
     public function update(Request $request, PermohonanSuketKematian $pemohonSuketKematian)
     {
         $validatedData = $request->validate([
-            'status_permohonan' => 'required|in:Menunggu Verifikasi Kecamatan,Diverifikasi Kecamatan,Ditolak Kecamatan',
-            'keterangan' => 'required_if:status_permohonan,Ditolak Kecamatan',
-            'berkas_permohonan' => 'required_if:status_permohonan,Diverifikasi Kecamatan',
-            'nomor_surat' => 'required_if:status_permohonan,Diverifikasi Kecamatan',
+            'status_permohonan' => 'required|in:Menunggu Verifikasi Kelurahan,Diverifikasi Kelurahan,Ditolak Kelurahan',
+            'keterangan' => 'required_if:status_permohonan,Ditolak Kelurahan',
+            'berkas_permohonan' => 'required_if:status_permohonan,Diverifikasi Kelurahan',
+            'nomor_surat' => 'required_if:status_permohonan,Diverifikasi Kelurahan',
         ]);
 
         $permohonan = $pemohonSuketKematian->load(['yangMeninggal', 'pemohon', 'berkasSuketKematian']);
@@ -143,7 +133,7 @@ class PemohonSuketKematianController extends Controller
         ]);
 
 
-        if ($validatedData['status_permohonan'] === 'Diverifikasi Kecamatan') {
+        if ($validatedData['status_permohonan'] === 'Diverifikasi Kelurahan') {
             $templatePath = Storage::disk('public')->path($validatedData['berkas_permohonan']);
 
             if (!Storage::disk('public')->exists($validatedData['berkas_permohonan'])) {
