@@ -61,7 +61,7 @@ export default function EditTemplateBerkas({ templateBerkas }: EditTemplateBerka
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <Card className="max-w-3xl">
                     <CardHeader>
-                        <CardTitle>Edit Template Berkas Nikah</CardTitle>
+                        <CardTitle>Ubah Template Berkas Nikah</CardTitle>
                         <CardDescription>
                             Kamu bisa mengganti nama atau mengunggah file baru. File sebelumnya akan diganti jika kamu upload file baru.
                         </CardDescription>
