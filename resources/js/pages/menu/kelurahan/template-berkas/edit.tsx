@@ -24,7 +24,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type TemplateBerkas = {
-    id: number;
     nama_berkas: string;
     path: string;
 };
@@ -34,15 +33,19 @@ type EditTemplateBerkasProps = {
 };
 
 export default function EditTemplateBerkas({ templateBerkas }: EditTemplateBerkasProps) {
-    const { data, setData, put, processing, errors, isDirty } = useForm({
+    const { data, setData, post, processing, errors, isDirty } = useForm({
         nama_berkas: templateBerkas.nama_berkas,
         path: null as File | null,
+        _method: 'PUT',
     });
+
+    console.log(data);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        put(route('kelurahan.template-berkas.update', templateBerkas), {
+        post(route('kelurahan.template-berkas.update', templateBerkas), {
+            forceFormData: true,
             onSuccess: () => {
                 toast.success('Template berkas berhasil diperbarui!');
             },
@@ -67,25 +70,19 @@ export default function EditTemplateBerkas({ templateBerkas }: EditTemplateBerka
                         <form onSubmit={submit} className="space-y-4">
                             <div className="grid gap-2">
                                 <Label>Nama Berkas</Label>
-                                <Input
-                                    value={data.nama_berkas}
-                                    onChange={(e) => setData('nama_berkas', e.target.value)}
-                                />
-                                {errors.nama_berkas && (
-                                    <p className="text-sm text-red-500">{errors.nama_berkas}</p>
-                                )}
+                                <Input value={data.nama_berkas} onChange={(e) => setData('nama_berkas', e.target.value)} />
+                                {errors.nama_berkas && <p className="text-sm text-red-500">{errors.nama_berkas}</p>}
                             </div>
                             <div className="grid gap-2">
                                 <Label>Upload File Baru (opsional)</Label>
                                 <Input
                                     type="file"
-                                    onChange={(e) =>
-                                        setData('path', e.target.files?.[0] ?? null)
-                                    }
+                                    onChange={(e) => {
+                                        setData('path', e.target.files && e.target.files[0] ? e.target.files[0] : null);
+                                    }}
+                                    accept=".docx"
                                 />
-                                {errors.path && (
-                                    <p className="text-sm text-red-500">{errors.path}</p>
-                                )}
+                                {errors.path && <p className="text-sm text-red-500">{errors.path}</p>}
                             </div>
                             <Button type="submit" disabled={processing || !isDirty}>
                                 Simpan Perubahan

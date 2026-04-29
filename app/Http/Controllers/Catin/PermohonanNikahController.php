@@ -60,7 +60,6 @@ class PermohonanNikahController extends Controller
 
         try {
             $userId = Auth::user()->id;
-            // 1. Simpan pria
             $pria = Mempelai::create([
                 'user_id' => $userId,
                 'nama_lengkap' => $request->pria['nama_lengkap'],
@@ -75,7 +74,6 @@ class PermohonanNikahController extends Controller
                 'alamat' => $request->pria['alamat'],
             ]);
 
-            // 2. Simpan ayah & ibu pria
             OrangTua::create(array_merge($request->pria['ayah'], [
                 'mempelai_id' => $pria->id,
                 'jenis_kelamin' => 'Laki-laki',
@@ -86,7 +84,6 @@ class PermohonanNikahController extends Controller
                 'jenis_kelamin' => 'Perempuan',
             ]));
 
-            // 3. Simpan wanita
             $wanita = Mempelai::create([
                 'user_id' => $userId,
                 'nama_lengkap' => $request->wanita['nama_lengkap'],
@@ -101,7 +98,6 @@ class PermohonanNikahController extends Controller
                 'alamat' => $request->wanita['alamat'],
             ]);
 
-            // 4. Simpan ayah & ibu wanita
             OrangTua::create(array_merge($request->wanita['ayah'], [
                 'mempelai_id' => $wanita->id,
                 'jenis_kelamin' => 'Laki-laki',
@@ -112,7 +108,6 @@ class PermohonanNikahController extends Controller
                 'jenis_kelamin' => 'Perempuan',
             ]));
 
-            // 5. Tambahkan Data Mempelai wanita dan pria ke tabel permohonan nikah
             $permohonanNikah = PermohonanNikah::create([
                 'user_id' => $userId,
                 'mempelai_pria_id' => $pria->id,

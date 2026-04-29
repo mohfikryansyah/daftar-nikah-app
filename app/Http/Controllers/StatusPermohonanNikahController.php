@@ -457,6 +457,7 @@ class StatusPermohonanNikahController extends Controller
         $berkasDariKelurahan = BerkasPermohonanNikah::where('permohonan_nikah_id', $permohonanNikah->id)->first();
 
         $templateProcessor->setValue('${berkas_created_at}', $berkasDariKelurahan->created_at->locale('id')->translatedFormat('d F Y'));
+        
         $templateProcessor->setValue('${berkas_nomor_surat}', $berkasDariKelurahan->nomor_surat);
 
         $outputPath = 'generated-berkas/Surat Keterangan Dispensasi - ' . $permohonanNikah->user->name . ' - ' . now()->timestamp . '.docx';

@@ -1,10 +1,10 @@
+import { DataTable } from '@/components/datatable/data-table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, PermohonanNikah, SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import Chart from './chart';
-import { DataTable } from '@/components/datatable/data-table';
 import { columns } from '../permohonan-nikah/columns';
+import Chart from './chart';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -18,7 +18,7 @@ type LocalTypePermohonanNikah = {
 
 interface Props {
     permohonanNikahChart: LocalTypePermohonanNikah[];
-    permohonanNikah: PermohonanNikah[]
+    permohonanNikah: PermohonanNikah[];
 }
 
 export default function DashboardKecamatan({ permohonanNikahChart, permohonanNikah }: Props) {
@@ -29,15 +29,15 @@ export default function DashboardKecamatan({ permohonanNikahChart, permohonanNik
             <Head title="Dashboard Kelurahan" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <h2 className="text-xl font-semibold tracking-tight">{`Selamat datang, ${auth.user.name}`}</h2>
-                <div className="md:grid md:grid-cols-2 gap-2 not-md:space-y-4">
+                <div className="gap-2 not-md:space-y-4 md:grid md:grid-cols-2">
                     <Card>
                         <CardContent>
                             <Chart data={permohonanNikahChart}></Chart>
                         </CardContent>
                     </Card>
-                    <Card className='md:max-h-[500px]'>
+                    <Card className="md:max-h-[500px]">
                         <CardHeader>
-                            <CardTitle>Daftar Permohonan Nikah Terbaru  </CardTitle>
+                            <CardTitle>Daftar Permohonan Nikah Terbaru </CardTitle>
                         </CardHeader>
                         <CardContent>
                             <DataTable columns={columns} data={permohonanNikah}></DataTable>
