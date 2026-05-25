@@ -306,6 +306,12 @@ class StatusPermohonanNikahController extends Controller
 
             $outputPath = 'generated-berkas/Surat Keterangan Bimbingan Keluarga - ' . $permohonanNikah->user->name . ' - ' . now()->timestamp . '.docx';
 
+
+            $templateProcessor->setValue(
+                '${tanggal_surat}',
+                Carbon::now()->locale('id')->translatedFormat('d F Y')
+            );
+            
             $berkasLama = BerkasPermohonanNikah::where('permohonan_nikah_id', $permohonanNikah->id)->where('dibuat_oleh', Auth::user()->id)->first();
             if ($berkasLama) {
                 if (Storage::disk('public')->exists($berkasLama->file_path)) {
@@ -457,7 +463,7 @@ class StatusPermohonanNikahController extends Controller
         $berkasDariKelurahan = BerkasPermohonanNikah::where('permohonan_nikah_id', $permohonanNikah->id)->first();
 
         $templateProcessor->setValue('${berkas_created_at}', $berkasDariKelurahan->created_at->locale('id')->translatedFormat('d F Y'));
-        
+
         $templateProcessor->setValue('${berkas_nomor_surat}', $berkasDariKelurahan->nomor_surat);
 
         $outputPath = 'generated-berkas/Surat Keterangan Dispensasi - ' . $permohonanNikah->user->name . ' - ' . now()->timestamp . '.docx';
