@@ -16,7 +16,7 @@ class  TemplateBerkasController extends Controller
     public function index()
     {
         return Inertia::render('menu/kelurahan/template-berkas/pages', [
-            'templateBerkas' => TemplateBerkas::with(['user'])->latest()->get(),
+            'templateBerkas' => TemplateBerkas::where('user_id', Auth::id())->with(['user'])->latest()->get(),
         ]);
     }
 

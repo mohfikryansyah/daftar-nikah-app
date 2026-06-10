@@ -193,9 +193,10 @@ class PermohonanNikahController extends Controller
      */
     public function show(PermohonanNikah $permohonanNikah)
     {
+        $user = Auth::user();
         return Inertia::render('menu/permohonan-nikah/show', [
             'permohonanNikah' => $permohonanNikah->load(['mempelaiPria.orangTua', 'mempelaiWanita.orangTua', 'user', 'latestStatus', 'jadwalBimbinganNikah', 'berkasPermohonanNikah']),
-            'templateBerkas' => TemplateBerkas::latest()->get(),
+            'templateBerkas' => TemplateBerkas::where('user_id', $user->id)->latest()->get(),
         ]);
     }
 
